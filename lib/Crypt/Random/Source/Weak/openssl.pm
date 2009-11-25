@@ -1,13 +1,13 @@
 #!/usr/bin/perl
 
 package Crypt::Random::Source::Weak::openssl;
-use Squirrel;
+use Moose;
 
 use File::Which qw(which);
 
 use namespace::clean -except => [qw(meta)];
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 sub available {
 	which("openssl");
@@ -30,7 +30,9 @@ has default_chunk_size => (
 	trigger => sub { shift->clear_command },
 );
 
-has '+command' => (
+has 'command' => (
+	isa => "ArrayRef",
+	is  => "ro",
 	lazy_build => 1,
 	clearer => "clear_command",
 );
